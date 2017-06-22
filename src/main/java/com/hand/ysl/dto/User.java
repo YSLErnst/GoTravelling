@@ -1,4 +1,4 @@
-package com.hand.ysl.dto;
+﻿package com.hand.ysl.dto;
 
 public class User {
     private Integer id;
@@ -11,6 +11,7 @@ public class User {
 
     private String des;
 
+    //电话号码
     private String tel;
 
     private String address;
