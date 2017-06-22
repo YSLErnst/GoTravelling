@@ -1,4 +1,4 @@
-package com.hand.ysl.controller;
+﻿package com.hand.ysl.controller;
 
 import java.util.Map;
 
@@ -12,7 +12,7 @@ import com.hand.ysl.service.IUserService;
 
 /**
  * 
- * create by Ernst on 2016年12月22日
+ * 
  */
 @Controller("userController")
 @RequestMapping("/user")
@@ -22,7 +22,7 @@ public class UserController {
 
 	@RequestMapping(value = "/hello", method = RequestMethod.POST)
 	public String getByController(String id) {
-		return "hello";
+		return "index";
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
