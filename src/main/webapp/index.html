@@ -8,18 +8,35 @@
 <div ng-app="myApp" ng-init="firstName='ysl'"ng-controller="myCtrl">
  	<p>名字 : <input type="text" ng-model="name"></p>
  	<h1>Hello {{name}}</h1>
- 	<h1>{{5+10}}</h1>
+ 	<h1>{{2017-23}}</h1>
  	<p>姓名为:<span ng-bind="firstName"></span></p>
 	<p>name：{{firstNames+lastName}}</p>
+	<input type="button" value="查看服务器ip" onclick="checkIp()"/>
 </div>
 
 </body>
 <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <script>
 	var app = angular.module('myApp',[]);
 	app.controller('myCtrl',function($scope){
 		$scope.firstNames = "袁";
 		$scope.lastName = "胜利";
 	});
+
+	function checkIp() {
+		//alert(1234);
+		$.ajax({
+			url: "user/checkIp",
+			type: "GET",
+			async: false,
+			success: function(data) {
+				alert("success:"+data);
+			},
+			error: function() {
+				alert("error");
+			}
+		});
+	}
 </script>
 </html>
