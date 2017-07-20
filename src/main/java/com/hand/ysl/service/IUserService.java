@@ -1,7 +1,7 @@
-﻿package com.hand.ysl.service;
+package com.hand.ysl.service;
 
 /**
- * 
+ *
  * create by Ernst on 2016年12月12日
  */
 public interface IUserService {
@@ -13,5 +13,5 @@ public interface IUserService {
 	 * @return
 	 */
 	public String login(String username,String password);
-	
+
 }

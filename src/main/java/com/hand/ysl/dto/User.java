@@ -1,4 +1,4 @@
-﻿package com.hand.ysl.dto;
+package com.hand.ysl.dto;
 
 public class User {
     private Integer id;

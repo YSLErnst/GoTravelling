@@ -10,6 +10,7 @@
 *.iml
 *.iws
 **/out
+.metadata/
 
 # Mac
 .DS_Store

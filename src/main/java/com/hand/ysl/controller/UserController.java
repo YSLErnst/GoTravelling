@@ -1,4 +1,4 @@
-﻿package com.hand.ysl.controller;
+package com.hand.ysl.controller;
 
 import java.util.Map;
 
