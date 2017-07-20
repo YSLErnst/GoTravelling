@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<meta charset="utf-8">
 </head>
 <body>
-首页！
-<br/>
-<p>All Rights Reserved By Ernst</p>
+
+<div ng-app="myApp" ng-init="firstName='ysl'"ng-controller="myCtrl">
+ 	<p>名字 : <input type="text" ng-model="name"></p>
+ 	<h1>Hello {{name}}</h1>
+ 	<h1>{{5+10}}</h1>
+ 	<p>姓名为:<span ng-bind="firstName"></span></p>
+	<p>name：{{firstNames+lastName}}</p>
+</div>
+
 </body>
+<script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+<script>
+	var app = angular.module('myApp',[]);
+	app.controller('myCtrl',function($scope){
+		$scope.firstNames = "袁";
+		$scope.lastName = "胜利";
+	});
+</script>
 </html>
