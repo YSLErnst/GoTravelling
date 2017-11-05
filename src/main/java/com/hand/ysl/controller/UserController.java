@@ -2,9 +2,9 @@ package com.hand.ysl.controller;
 
 import java.net.InetAddress;
 import java.util.Map;
-import java.util.logging.Logger;
 
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UserController {
 	@Autowired
 	private IUserService userService;
+	//定义一个全局的记录器，通过LoggerFactory获取
+	private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@RequestMapping(value = "/hello", method = RequestMethod.POST)
 	public String getByController(String id) {
@@ -50,6 +52,7 @@ public class UserController {
 			localip = ia.getHostAddress();
 			System.out.println("本机名称是："+ localname);
 			System.out.println("本机的ip是 ："+localip);
+			logger.info("--------------------本机名称是：" + localname + ",本机的ip是 ：" + localip + "-------------------");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

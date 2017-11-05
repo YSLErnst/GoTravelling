@@ -7,7 +7,7 @@
 <display-name>GoTravelling</display-name>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:resources/spring.xml;classpath:resources/spring-mybatis.xml</param-value>
+		<param-value>classpath:resources/spring.xml;classpath:resources/spring-mybatis.xml;</param-value>
 	</context-param>
 	<filter>
 		<description>字符集过滤器</description>
