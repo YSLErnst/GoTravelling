@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.9.4
+Created-By: ysl
+Built-Date: 2017-11-05 10:40:22
+Implementation-Title: GoTravelling
+Implementation-Version: 1.0
+Implementation-Vendor: ysl
+

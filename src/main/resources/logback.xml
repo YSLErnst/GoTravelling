@@ -1,0 +1,53 @@
+<configuration scan="true" scanPeriod="3 seconds">
+	<!-- <turboFilter class="ch.qos.logback.classic.turbo.MDCFilter"> <MDCKey>userId</MDCKey> 
+		<Value>1</Value> <OnMatch>ACCEPT</OnMatch> <OnMismatch>DENY</OnMismatch> 
+		</turboFilter> -->
+	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+	<property name="LOG_HOME" value="D:/logs" />
+	<timestamp key="timestamp-by-second" datePattern="yyyyMMdd'T'HHmmss"/>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%X{userId}]
+				[%X{requestId}] %logger - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="File-Appender" class="ch.qos.logback.core.FileAppender">
+		<file>${LOG_HOME}/logfile-${timestamp-by-second}.log</file>
+		<encoder>
+			<pattern>%msg%n</pattern>
+			<outputPatternAsHeader>true</outputPatternAsHeader>
+		</encoder>
+	</appender>
+
+
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="File-Appender" />
+		<!-- <appender-ref ref="stash" /> -->
+	</root>
+	<logger name="org.activiti.engine" level="INFO" additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="org.activiti.spring.SpringTransactionInterceptor"
+		level="INFO" additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="org.apache.ibatis.transaction.managed.ManagedTransaction"
+		level="INFO" additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="org.quartz.core.QuartzSchedulerThread" level="INFO"
+		additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="org.springframework.scheduling.quartz.LocalDataSourceJobStore"
+		level="WARN" additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="org.quartz.impl.jdbcjobstore.StdRowLockSemaphore"
+		level="INFO" additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
+</configuration>
