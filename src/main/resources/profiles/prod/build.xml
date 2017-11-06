@@ -127,24 +127,21 @@
     <target name="default" depends="deploy,destory">
     </target>
 
-    <target name="start_tomcat">
-        <echo>启动tomcat</echo>
-        <exec executable="cmd" dir="${tomcat.home}/bin"  failonerror="false"
-              output="${log.file}" append="true" >
-            <!-- <arg value="/c" /> -->
-            <env key="CATALINA_HOME" path="${tomcat.home}"/>
-            <arg value="/c startup.bat" />
-        </exec>
+    <!--shutdowntomcat -->
+
+    <target name="shutdowntomcat" description="========shutdowntomcat===========">
+        <echo message="正在关闭服务器。。。" />
+        <exec executable="${tomcat.home}/bin/shutdown.bat" failonerror="false"></exec>
+        <echo message="服务器成功关闭" />
+        <sleep seconds="10"/>
     </target>
 
-    <target name="stop_tomcat">
-        <echo>停止tomcat</echo>
-        <exec executable="cmd" dir="${tomcat.home}/bin" failonerror="false"
-              output="${log.file}" append="true" >
-            <!-- <arg value="/c" /> -->
-            <env key="CATALINA_HOME" path="${tomcat.home}"/>
-            <arg value="/c shutdown.bat" />
-        </exec>
+    <!--startuptomcat -->
+    <target name="startuptomcat" description="========startuptomcat===========">
+        <sleep seconds="5"/>
+        <echo message="正在启动服务器。。。" />
+        <exec executable="${tomcat.home}/bin/startup.bat" failonerror="false"></exec>
+        <echo message="服务器启动成功" />
     </target>
 
 </project>
