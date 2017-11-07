@@ -129,19 +129,19 @@
 
     <!--shutdowntomcat -->
 
-    <target name="shutdowntomcat" description="========shutdowntomcat===========">
+<!--    <target name="shutdowntomcat" description="========shutdowntomcat===========">
         <echo message="正在关闭服务器。。。" />
         <exec executable="${tomcat.home}/bin/shutdown.bat" failonerror="false"></exec>
         <echo message="服务器成功关闭" />
         <sleep seconds="10"/>
-    </target>
+    </target>-->
 
     <!--startuptomcat -->
-    <target name="startuptomcat" description="========startuptomcat===========">
+<!--    <target name="startuptomcat" description="========startuptomcat===========">
         <sleep seconds="5"/>
         <echo message="正在启动服务器。。。" />
         <exec executable="${tomcat.home}/bin/startup.bat" failonerror="false"></exec>
         <echo message="服务器启动成功" />
-    </target>
+    </target>-->
 
 </project>
