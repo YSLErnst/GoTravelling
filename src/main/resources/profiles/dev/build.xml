@@ -49,18 +49,18 @@
     </target>
 
     <!--生成Javadoc 文档 -->
-<!--    <target name="javadoc" description="生成Javadoc文档.">
-        <delete dir="${doc.dir}"/>
-        <mkdir dir="${doc.dir}"/>
-        <javadoc destdir="${doc.dir}" windowtitle="${project} Javadoc" use="yes"
-                 linksource="no" splitindex="yes" encoding="UTF-8"
-                 docencoding="UTF-8" locale="zh_CN">
-            <classpath refid="classpath"/>
-            <packageset dir="${src.dir}" defaultexcludes="yes">
-                <include name="${domain}/${package}/**"/>
-            </packageset>
-        </javadoc>
-    </target>-->
+    <!--    <target name="javadoc" description="生成Javadoc文档.">
+            <delete dir="${doc.dir}"/>
+            <mkdir dir="${doc.dir}"/>
+            <javadoc destdir="${doc.dir}" windowtitle="${project} Javadoc" use="yes"
+                     linksource="no" splitindex="yes" encoding="UTF-8"
+                     docencoding="UTF-8" locale="zh_CN">
+                <classpath refid="classpath"/>
+                <packageset dir="${src.dir}" defaultexcludes="yes">
+                    <include name="${domain}/${package}/**"/>
+                </packageset>
+            </javadoc>
+        </target>-->
 
     <target name="package" depends="compile" description="打包成Jar" >
         <mkdir dir="${dist.dir}/${version}" />
@@ -101,7 +101,7 @@
           <jar jarfile="${dist.dir}/${version}/${domain}.${project}.testsource.${version}.jar"
               basedir="${test.dir}" manifest="${web.root}/META-INF/MANIFEST.MF">
           </jar>
- 
+
           <jar jarfile="${dist.dir}/${version}/${domain}.${project}.javadoc.${version}.jar"
               basedir="${doc.dir}" manifest="${web.root}/META-INF/MANIFEST.MF"/>
           -->

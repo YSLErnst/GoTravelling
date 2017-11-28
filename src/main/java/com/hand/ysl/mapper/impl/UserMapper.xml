@@ -9,6 +9,8 @@
 		<result column="des" property="des" jdbcType="VARCHAR" />
 		<result column="tel" property="tel" jdbcType="VARCHAR" />
 		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="last_login_time" property="lastLoginTime" jdbcType="DATE" />
+		<result column="enabled_flag" property="enabledFlag" jdbcType="VARCHAR" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		id, name, password, level, des, tel, address

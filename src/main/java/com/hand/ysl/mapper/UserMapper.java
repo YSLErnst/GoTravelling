@@ -1,8 +1,9 @@
 package com.hand.ysl.mapper;
 
 import com.hand.ysl.dto.User;
+import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
 	   //根据用户名查询
-	   public User getByUserName(String username);
+	   User getByUserName(@Param("username") String username);
 }
