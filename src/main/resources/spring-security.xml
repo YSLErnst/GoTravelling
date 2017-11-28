@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress ALL -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+                        http://www.springframework.org/schema/security
+                        http://www.springframework.org/schema/security/spring-security-3.2.xsd"
+       default-lazy-init="true">
+
+    <description>spring-security配置</description>
+
+    <import resource="spring-mybatis.xml"/>
+
+    <!-- 静态资源 -->
+    <security:http pattern="/css/**" security="none" />
+    <security:http pattern="/js/**" security="none" />
+    <security:http pattern="/images/**" security="none" />
+
+    <!-- 启用annotation -->
+    <!--<security:global-method-security secured-annotations="enabled" jsr250-annotations="enabled"/>-->
+
+    <!-- 使用pointcut切入点 -->
+    <security:global-method-security>
+        <security:protect-pointcut expression="execution(* com.hand.ysl.service.*.sayHello(..))" access="ROLE_USER,ROLE_ADMIN"/>
+        <!-- 第一个* 任意的返回类型
+             第二个* 任意的类
+         -->
+
+        <security:protect-pointcut expression="execution(* com.hand.ysl.service.*.sayBye(..))" access="ROLE_ADMIN"/>
+
+    </security:global-method-security>
+
+    <!-- 对登录页面不进行拦截， 后面的*主要是请求页面可能会带有一些参数-->
+    <security:http pattern="/pages/login/login.jsp*" security="none"/>
+    <!--requires-channel：拦截http还是https的，如果两个都拦截用any-->
+    <security:http auto-config="true" access-denied-page="/pages/login/loginFailed.jsp">
+        <!-- 指定登录页面 -->
+        <security:form-login login-page="/login.jsp"/>
+        <!-- 退出后的页面 -->
+        <security:logout logout-success-url="/pages/login/logout.jsp"/>
+
+        <security:intercept-url pattern="/pages/index.jsp"
+                                access="ROLE_ADMIN,ROLE_USER"/>
+        <security:intercept-url pattern="/pages/admin.jsp"
+                                access="ROLE_ADMIN" />
+        <!-- 会话管理配额 -->
+        <security:session-management invalid-session-url="/pages/login/sessionTimeout.jsp">
+            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
+        </security:session-management>
+
+    </security:http>
+
+
+    <!-- 认证配置 自定义认证实现UserDetailsService接口 -->
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:password-encoder hash="md5"/>
+            <!--<security:user-service>
+                <security:user name="user" password="ee11cbb19052e40b07aac0ca060c23ee" authorities="ROLE_USER"/>
+            </security:user-service>-->
+
+            <security:jdbc-user-service data-source-ref="dataSource"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath:messages_zh_CN" />
+    </bean>
+
+    <bean id="localeResolver"
+          class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver" />
+
+    <!-- 启用用户的缓存功能 -->
+    <bean id="userCache"
+          class="org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache">
+        <property name="cache" ref="userEhCache" />
+    </bean>
+
+    <bean id="userEhCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+        <property name="cacheName" value="userCache" />
+        <property name="cacheManager" ref="cacheManager" />
+    </bean>
+
+    <bean id="cacheManager"
+          class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" />
+
+    <!-- Jcaptcha相关的配置 -->
+    <bean id="captchaService"
+          class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
+        <property name="captchaEngine">
+            <bean class="com.hand.ysl.jcaptcha.GMailEngine" />
+        </property>
+        <!-- 默认生成的图片180秒过期 , 可另行设置
+        <property name="minGuarantedStorageDelayInSeconds" value="180" />
+        -->
+    </bean>
+
+</beans>

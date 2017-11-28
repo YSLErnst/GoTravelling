@@ -1,6 +1,16 @@
 package com.hand.ysl.dto;
 
+import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Table(name = "b_user")
 public class User {
+
+    @Id
+    @GeneratedValue
     private Integer id;
 
     private String name;
@@ -15,6 +25,10 @@ public class User {
     private String tel;
 
     private String address;
+
+    private Long lastLoginTime;
+
+    private String enabledFlag;
 
     public Integer getId() {
         return id;
@@ -72,7 +86,23 @@ public class User {
         this.address = address == null ? null : address.trim();
     }
 
-	@Override
+    public Long getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(Long lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    public String getEnabledFlag() {
+        return enabledFlag;
+    }
+
+    public void setEnabledFlag(String enabledFlag) {
+        this.enabledFlag = enabledFlag;
+    }
+
+    @Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", password=" + password
 				+ ", level=" + level + ", des=" + des + ", tel=" + tel

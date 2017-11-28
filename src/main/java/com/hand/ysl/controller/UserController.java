@@ -3,9 +3,11 @@ package com.hand.ysl.controller;
 import java.net.InetAddress;
 import java.util.Map;
 
+import com.hand.ysl.service.HelloService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UserController {
 	@Autowired
 	private IUserService userService;
+
+	@Autowired
+	private HelloService helloService;
+
+	@Value("#{configProperties['elasticsearchIp']}")
+	private String esIp;
+
+	@Value("#{configProperties['elasticsearchPort']}")
+	private String esPort;
+
+	@Value("#{configProperties['elasticsearchClusterName']}")
+	private String esCluster;
+
 	//定义一个全局的记录器，通过LoggerFactory获取
 	private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -27,7 +42,8 @@ public class UserController {
 		return "index";
 	}
 	
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/login", method = RequestMethod.POST,produces = "text/html;charset=UTF-8")
+	@ResponseBody
 	public String login(@RequestBody Map map) {
 		String username = (String) map.get("username");
 		String pwd = (String) map.get("password");
@@ -59,4 +75,23 @@ public class UserController {
 		}
 		return "本机名称是："+localname+",本机的ip是:"+localip;
 	}
+
+	@RequestMapping(value = "/hello", method = RequestMethod.GET,produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String hello() {
+		logger.info("es的ip:"+esIp+",es的端口:"+esPort+",es的集群名:"+esCluster);
+		return helloService.sayHello("jack");
+	}
+
+	@RequestMapping(value = "/bye", method = RequestMethod.GET,produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String bye() {
+		return helloService.sayBye("tom");
+	}
+
+
+	/**
+	 * 查询日志
+	 */
+
 }
