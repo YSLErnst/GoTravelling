@@ -1,43 +1,41 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hand.ysl.mapper.UserMapper">
-	<resultMap id="BaseResultMap" type="com.hand.ysl.dto.User">
+	<resultMap id="UserResultMap" type="com.hand.ysl.dto.User">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
 		<result column="password" property="password" jdbcType="VARCHAR" />
-		<result column="level" property="level" jdbcType="INTEGER" />
-		<result column="des" property="des" jdbcType="VARCHAR" />
-		<result column="tel" property="tel" jdbcType="VARCHAR" />
-		<result column="address" property="address" jdbcType="VARCHAR" />
-		<result column="last_login_time" property="lastLoginTime" jdbcType="DATE" />
 		<result column="enabled_flag" property="enabledFlag" jdbcType="VARCHAR" />
 	</resultMap>
+
+	<resultMap id="RoleResultMap" type="com.hand.ysl.dto.Role">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+	</resultMap>
+
 	<sql id="Base_Column_List">
-		id, name, password, level, des, tel, address
+		id, name, password, enabled_flag
 	</sql>
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+	<select id="selectByPrimaryKey" resultMap="UserResultMap"
 		parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
-		from b_user
+		from user
 		where id = #{id,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from b_user
+		delete from user
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="com.hand.ysl.dto.User">
-		insert into b_user (id, name, password,
-		level, des, tel, address
+		insert into user (id, name, password
 		)
 		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
-		#{password,jdbcType=VARCHAR},
-		#{level,jdbcType=INTEGER}, #{des,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR},
-		#{address,jdbcType=VARCHAR}
+		#{password,jdbcType=VARCHAR}
 		)
 	</insert>
 	<insert id="insertSelective" parameterType="com.hand.ysl.dto.User">
-		insert into b_user
+		insert into user
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">
 				id,
@@ -47,18 +45,6 @@
 			</if>
 			<if test="password != null">
 				password,
-			</if>
-			<if test="level != null">
-				level,
-			</if>
-			<if test="des != null">
-				des,
-			</if>
-			<if test="tel != null">
-				tel,
-			</if>
-			<if test="address != null">
-				address,
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -71,22 +57,10 @@
 			<if test="password != null">
 				#{password,jdbcType=VARCHAR},
 			</if>
-			<if test="level != null">
-				#{level,jdbcType=INTEGER},
-			</if>
-			<if test="des != null">
-				#{des,jdbcType=VARCHAR},
-			</if>
-			<if test="tel != null">
-				#{tel,jdbcType=VARCHAR},
-			</if>
-			<if test="address != null">
-				#{address,jdbcType=VARCHAR},
-			</if>
 		</trim>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="com.hand.ysl.dto.User">
-		update b_user
+		update user
 		<set>
 			<if test="name != null">
 				name = #{name,jdbcType=VARCHAR},
@@ -94,33 +68,21 @@
 			<if test="password != null">
 				password = #{password,jdbcType=VARCHAR},
 			</if>
-			<if test="level != null">
-				level = #{level,jdbcType=INTEGER},
-			</if>
-			<if test="des != null">
-				des = #{des,jdbcType=VARCHAR},
-			</if>
-			<if test="tel != null">
-				tel = #{tel,jdbcType=VARCHAR},
-			</if>
-			<if test="address != null">
-				address = #{address,jdbcType=VARCHAR},
-			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 	<update id="updateByPrimaryKey" parameterType="com.hand.ysl.dto.User">
-		update b_user
+		update user
 		set name = #{name,jdbcType=VARCHAR},
-		password = #{password,jdbcType=VARCHAR},
-		level = #{level,jdbcType=INTEGER},
-		des = #{des,jdbcType=VARCHAR},
-		tel = #{tel,jdbcType=VARCHAR},
-		address = #{address,jdbcType=VARCHAR}
+		password = #{password,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 	<!-- 自己编写的方法 -->
-	<select id="getByUserName" parameterType="java.lang.String" resultType="com.hand.ysl.dto.User">
-	 select * from b_user where name=#{username}
+	<select id="getByUserName" parameterType="java.lang.String" resultMap="UserResultMap">
+	 select * from user where name=#{username}
 	</select>
+
+	<select id="getRolesByUserName" parameterType="java.lang.String" resultMap="RoleResultMap">
+select r.id,r.name from role r where r.id in (select ur.role_id from user_role ur where ur.user_id=(select u.id from user u where u.name=#{username}
+))	</select>
 </mapper>

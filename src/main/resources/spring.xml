@@ -17,6 +17,8 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 	<!-- 自动扫描(自动注入) -->
 	<context:component-scan base-package="com.hand.ysl.service" />
 	<context:component-scan base-package="com.hand.ysl.controller" />
+	<context:component-scan base-package="com.hand.ysl.annotation" />
+	<context:component-scan base-package="com.hand.ysl.aspect" />
 
 	<bean id="configProperties"
 		  class="org.springframework.beans.factory.config.PropertiesFactoryBean">
@@ -31,5 +33,7 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 		  class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
 		<property name="properties" ref="configProperties" />
 	</bean>
+
+	<aop:aspectj-autoproxy/>
 
 </beans>

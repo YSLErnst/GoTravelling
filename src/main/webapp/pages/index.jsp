@@ -15,7 +15,8 @@
 <br/>
 <a href="/j_spring_security_logout">退出系统</a>
 <input type="button" value="打招呼" onclick="sayHelo()"/>
-<input type="button" value="说拜拜" onclick="sayBye()"/>
+<input type="button" value="说拜拜" onclick="sayBye()"/><br/>
+
 <script>
     function sayHelo() {
         $.ajax({

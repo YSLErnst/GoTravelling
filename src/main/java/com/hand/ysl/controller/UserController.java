@@ -1,26 +1,33 @@
 package com.hand.ysl.controller;
 
-import java.net.InetAddress;
-import java.util.Map;
-
+import com.hand.ysl.dto.TokenTransfer;
 import com.hand.ysl.service.HelloService;
+import com.hand.ysl.service.impl.MyUserDetailService;
+import com.hand.ysl.util.TokenUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.hand.ysl.service.IUserService;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.net.InetAddress;
 
 @Controller("userController")
 @RequestMapping("/user")
 public class UserController {
+
 	@Autowired
-	private IUserService userService;
+	private MyUserDetailService userService;
 
 	@Autowired
 	private HelloService helloService;
@@ -34,25 +41,16 @@ public class UserController {
 	@Value("#{configProperties['elasticsearchClusterName']}")
 	private String esCluster;
 
+	@Autowired
+	@Qualifier("authenticationManager")
+	private AuthenticationManager authManager;
+
 	//定义一个全局的记录器，通过LoggerFactory获取
 	private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@RequestMapping(value = "/hello", method = RequestMethod.POST)
 	public String getByController(String id) {
 		return "index";
-	}
-	
-	@RequestMapping(value = "/login", method = RequestMethod.POST,produces = "text/html;charset=UTF-8")
-	@ResponseBody
-	public String login(@RequestBody Map map) {
-		String username = (String) map.get("username");
-		String pwd = (String) map.get("password");
-		String result = userService.login(username, pwd);
-		if(result.equals("OK")){
-			return "success";
-		}else {
-			return "failure";
-		}
 	}
 
 	@RequestMapping(value = "/checkIp", method = RequestMethod.GET,produces = "text/html;charset=UTF-8")
@@ -90,8 +88,24 @@ public class UserController {
 	}
 
 
-	/**
-	 * 查询日志
-	 */
+	@RequestMapping(value = "/loginWithToken", method = RequestMethod.POST,produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public TokenTransfer authenticate(@RequestParam String username, @RequestParam String password) {
+		UsernamePasswordAuthenticationToken authenticationToken =
+				new UsernamePasswordAuthenticationToken(username, password);
+		Authentication authentication = this.authManager.authenticate(authenticationToken);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+      /*
+       * Reload user as password of authentication principal will be null after authorization and
+       * password is needed for token generation
+       */
+		UserDetails userDetails = this.userService.loadUserByUsername(username);
+//        Map<String, Object> map = new HashMap<String, Object>();
+//        map.put("token", new TokenTransfer(TokenUtils.createToken(userDetails)));
+
+		return new TokenTransfer(TokenUtil.createToken(userDetails));
+//        return JsonUtil.getJsonStr(map);
+	}
 
 }
