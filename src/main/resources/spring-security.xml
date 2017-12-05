@@ -54,14 +54,15 @@
 
 
     <!-- 认证配置 自定义认证实现UserDetailsService接口 -->
+    <bean id="MyUserService" class="com.hand.ysl.provider.SecurityProvider"></bean>
     <security:authentication-manager>
-        <security:authentication-provider>
-            <security:password-encoder hash="md5"/>
+        <security:authentication-provider ref="MyUserService">
+            <!--<security:password-encoder hash="md5"/>-->
             <!--<security:user-service>
                 <security:user name="user" password="ee11cbb19052e40b07aac0ca060c23ee" authorities="ROLE_USER"/>
             </security:user-service>-->
 
-            <security:jdbc-user-service data-source-ref="dataSource"/>
+            <!--<security:jdbc-user-service data-source-ref="dataSource"/>-->
         </security:authentication-provider>
     </security:authentication-manager>
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">

@@ -20,6 +20,23 @@
 		<description>spring监听器</description>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	
+	<!-- 自定义监听器 -->
+	<listener>
+		<listener-class>com.hand.ysl.listeners.FirstListener</listener-class>
+	</listener>
+	<context-param>
+		<param-name>yslParam</param-name>
+		<param-value>123</param-value>
+	</context-param>
+	
+	<listener>
+		<listener-class>com.hand.ysl.listeners.MySessionListener</listener-class>
+	</listener>
+	
+	<listener>
+		<listener-class>com.hand.ysl.listeners.MyHttpRequestListener</listener-class>
+	</listener>
 
 	<!-- spring mvc servlet -->
 	<servlet>
@@ -104,6 +121,6 @@
 	</welcome-file-list>
 	<!-- 配置session超时时间，单位分钟 -->
 	<session-config>
-		<session-timeout>15</session-timeout>
+		<session-timeout>1</session-timeout>
 	</session-config>
 </web-app>

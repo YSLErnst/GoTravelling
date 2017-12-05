@@ -11,6 +11,8 @@ import com.hand.ysl.dto.User;
 import com.hand.ysl.mapper.UserMapper;
 import com.hand.ysl.service.IUserService;
 
+import java.util.List;
+
 
 /**
  * 
@@ -26,9 +28,9 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public String login(String username, String password) {
-		User user = userMapper.getByUserName(username);
-		if(user!=null){
-			logger.info(user.toString());
+		List<User> users = userMapper.getByUserName(username);
+		if(users!=null && users.size()>0){
+			logger.info(users.toString());
 			return "OK";
 		}
 		return "NO";

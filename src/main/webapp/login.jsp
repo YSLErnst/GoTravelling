@@ -12,6 +12,7 @@
         <div class="span-24 last">
             <h3>
                 用户登录
+                当前在线人数：${onlinePeople}
             </h3>
             ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
             <div class="error">
@@ -71,7 +72,8 @@
             </form>
         </div>
     </div>
-</div>
+</div><br/>
+当前在线人数：${onlinePeople}
 </body>
 <script type="text/javascript">
     function refreshCaptcha() {
