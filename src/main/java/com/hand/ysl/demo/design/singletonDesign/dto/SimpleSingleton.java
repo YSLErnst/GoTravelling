@@ -1,7 +1,5 @@
 package com.hand.ysl.demo.design.singletonDesign.dto;
 
-import java.util.Objects;
-
 /**
  * Created by Ernst on 2017/8/16.
  * 单例，线程不安全

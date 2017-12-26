@@ -18,7 +18,9 @@
 		<encoder>
 			<pattern>%msg%n</pattern>
 			<outputPatternAsHeader>true</outputPatternAsHeader>
+			<charset>UTF-8</charset>
 		</encoder>
+
 	</appender>
 
 

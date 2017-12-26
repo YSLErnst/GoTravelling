@@ -1,23 +1,15 @@
 package com.hand.ysl.controller;
 
-import com.hand.ysl.dto.TokenTransfer;
 import com.hand.ysl.service.HelloService;
 import com.hand.ysl.service.impl.MyUserDetailService;
-import com.hand.ysl.util.TokenUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.net.InetAddress;
@@ -42,8 +34,9 @@ public class UserController {
 	private String esCluster;
 
 	@Autowired
-	@Qualifier("authenticationManager")
-	private AuthenticationManager authManager;
+	private AmqpTemplate amqpTemplate;
+
+
 
 	//定义一个全局的记录器，通过LoggerFactory获取
 	private final static Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -77,6 +70,11 @@ public class UserController {
 	@RequestMapping(value = "/hello", method = RequestMethod.GET,produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String hello() {
+		try {
+			amqpTemplate.convertAndSend("test-mq-exchange","test_queue_key","aaaa12321");
+		}catch (Exception e){
+			logger.error(e.toString());
+		}
 		logger.info("es的ip:"+esIp+",es的端口:"+esPort+",es的集群名:"+esCluster);
 		return helloService.sayHello("jack");
 	}
@@ -87,25 +85,5 @@ public class UserController {
 		return helloService.sayBye("tom");
 	}
 
-
-	@RequestMapping(value = "/loginWithToken", method = RequestMethod.POST,produces = "text/html;charset=UTF-8")
-	@ResponseBody
-	public TokenTransfer authenticate(@RequestParam String username, @RequestParam String password) {
-		UsernamePasswordAuthenticationToken authenticationToken =
-				new UsernamePasswordAuthenticationToken(username, password);
-		Authentication authentication = this.authManager.authenticate(authenticationToken);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-
-      /*
-       * Reload user as password of authentication principal will be null after authorization and
-       * password is needed for token generation
-       */
-		UserDetails userDetails = this.userService.loadUserByUsername(username);
-//        Map<String, Object> map = new HashMap<String, Object>();
-//        map.put("token", new TokenTransfer(TokenUtils.createToken(userDetails)));
-
-		return new TokenTransfer(TokenUtil.createToken(userDetails));
-//        return JsonUtil.getJsonStr(map);
-	}
 
 }

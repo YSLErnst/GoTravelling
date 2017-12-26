@@ -12,7 +12,7 @@ public abstract class CompositeEquipment extends Equipment{
 
     private int i=0;
 
-    private List<Equipment> equipmentList = new ArrayList<>();
+    private List<Equipment> equipmentList = new ArrayList();
 
     public CompositeEquipment(String name) {
         super(name);

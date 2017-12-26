@@ -13,6 +13,7 @@
 			classpath:spring-mybatis.xml;
 			<!--配置了加载的spring-security文件-->
 			classpath:spring-security.xml;
+			classpath:application-mq.xml;
 		</param-value>
 	</context-param>
 

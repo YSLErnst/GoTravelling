@@ -39,7 +39,7 @@ public class NewDeepPrototype implements Serializable{
             ByteArrayInputStream bi = new ByteArrayInputStream(bo.toByteArray());
             ObjectInputStream oi = new ObjectInputStream(bi);
             return oi.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
             return null;
